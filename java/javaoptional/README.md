@@ -16,8 +16,8 @@ O projeto é uma aplicação Spring Boot com Maven, com foco na demonstração d
 1. Clone este repositório para sua máquina local:
 
     ```bash
-    git clone https://github.com/seu-usuario/exemplo-optional-java.git
-    cd exemplo-optional-java
+    git clone https://github.com/osniantonio/estudos.git
+    cd java/javaoptional
     ```
 
 2. Compile e rode o projeto com Maven:
@@ -57,16 +57,3 @@ O projeto é uma aplicação Spring Boot com Maven, com foco na demonstração d
 - **`flatMap()`**:
     - Usado quando o valor dentro do `Optional` é outro `Optional`, permitindo "desempacotar" o valor.
     - **Exemplo**: `optionalPerson.flatMap(person -> Optional.ofNullable(person.getPersonName()))`
-
-## **Estrutura de Classes**
-
-### **`AddressInput`**
-- Representa o endereço de uma pessoa.
-
-  ```java
-  public class AddressInput {
-      private String street;
-      private String zipCode;
-      private String state;
-      private String city;
-  }
