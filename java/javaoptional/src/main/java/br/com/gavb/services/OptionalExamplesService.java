@@ -12,7 +12,7 @@ public class OptionalExamplesService {
         AddressInput address = new AddressInput("Rua A", "12345-678", "SP", "São Paulo");
         PersonInput person = new PersonInput("João", List.of(address));
 
-        // Exemplo de map()
+        // Exemplo com map()
         Optional<PersonInput> optionalPerson = Optional.ofNullable(person);
 
         // .map() para transformar o valor dentro do Optional
