@@ -1,6 +1,11 @@
 # Overview e Guia de Uso — java.util.Optional
-O `java.util.Optional` foi introduzido no Java 8 como parte de um conjunto de novas funcionalidades, incluindo expressões lambda, a API de Streams e o pacote `java.util.function`.
+O `java.util.Optional` foi introduzido no Java desde a versão 1.8 como parte de um conjunto de novas funcionalidades, incluindo expressões lambda, a API de Streams e o pacote `java.util.function`.
 Seu objetivo principal é melhorar a legibilidade e a segurança do código, tornando-o mais fácil de manter e menos propenso a erros, especialmente em situações onde a ausência de valor é legítima.
+
+Obs.: Classe baseada em valor e o uso de operações sensíveis à identidade (incluindo igualdade de referência (==), 
+código hash de identidade ou sincronização) em instâncias de `Optional` deve ser evitado.
+
+Fonte: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
 
 ## Quando utilizar o `java.util.Optional`?
 O `Optional` é útil nos seguintes casos:
@@ -28,12 +33,14 @@ O `Optional` é útil nos seguintes casos:
     ```
 
 ## Quando não utilizar o java.util.Optional?
-Evite usar o Optional nos seguintes cenários:
+Evite usar o Optional nos seguintes cenários (Conforme recomendações da JSR-335):
 1. Quando a performance é crítica: o uso excessivo de Optional pode ser prejudicial;
 2. Quando o valor é sempre esperado;
 3. Em campos de entidades ou dados persistidos: não mapear campos com Optional em frameworks como JPA;
 4. Não para substituir completamente o uso de null: utilizar quando a ausência de valor é um comportamento legítimo;
 5. Não utilizar em parâmetros de métodos: torna a assinatura mais difícil de entender, aumenta a complexidade e pode causar problemas de interoperabilidade com frameworks.
+
+Obs.: A JSR-335 é a Java Specification Request que introduziu expressões lambda, referências a métodos, interfaces funcionais e melhorias nas APIs da biblioteca padrão no Java SE 8. Ela é oficialmente intitulada: JSR 335: Lambda Expressions for the Java Programming Language.
 
 ## ⚠️ Resumo das Fricções com `Optional` em Frameworks
 
@@ -53,10 +60,28 @@ Embora `Optional` seja útil para expressar ausência de valor de forma mais seg
 - Em **DTOs e entidades**, mantenha os campos com tipos simples e evite `Optional`.
 - Para validação, aplique as anotações (`@NotNull`, `@Size`, etc.) diretamente sobre o tipo, sem encapsulá-lo em `Optional`.
 
+## Diferença entre `Optional.of()` e `Optional.ofNullable()` em Java
+A principal diferença entre `Optional.of()` e `Optional.ofNullable()` em Java está no tratamento de valores nulos.
 
-## **Conceito de `Optional` em Java**
+### `Optional.of(T value)`
+Esse método é usado quando você tem certeza de que o valor que está sendo passado **não é `null`**. Se o valor for `null`, ele lançará uma exceção `NullPointerException`.
+Exemplo:
+```java
+Optional<String> optional = Optional.of("Hello");  // Correto
+Optional<String> optionalNull = Optional.of(null); // Lança NullPointerException
+```
 
-`Optional` é uma classe contêiner que pode conter ou não um valor. Seu principal benefício é evitar o uso de valores nulos (que podem causar exceções de ponteiro nulo - `NullPointerException`). Além disso, `Optional` ajuda a reduzir a verbosidade do código, tornando-o mais funcional e fácil de entender.
+### Optional.ofNullable(T value)
+Esse método pode ser usado tanto para valores não nulos quanto nulos. Se o valor for null, o Optional retornará um Optional.empty(), que é uma instância de Optional que não contém valor.
+Exemplo:
+```java
+Optional<String> optional = Optional.ofNullable("Hello"); // Correto
+Optional<String> optionalNull = Optional.ofNullable(null); // Retorna Optional.empty
+```
+
+### Resumo
+Optional.of() não aceita null e lança NullPointerException se o valor for null.
+Optional.ofNullable() aceita null e, se o valor for null, retorna Optional.empty().
 
 ### **Principais Métodos Usados no Projeto**
 
